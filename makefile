@@ -2,15 +2,20 @@ src := $(wildcard src/*.c)
 obj := $(patsubst src/%.c,/tmp/%.o,$(src))
 lib := lib/libtwui.a
 dll := lib/libtwui.so
+libdir := lib/
 
 CC_FLAGS := -Iinclude -O0 -g -fPIC -std=c23
 LD_FLAGS := -shared
 AR_FLAGS := rcs
 
+$(lib) $(dll): | lib
+lib:
+	mkdir -p ./lib
+
 all: ${lib} ${dll}
 
 clean:
-	@rm -f $(obj) $(lib) $(dll)
+	@rm -rf $(obj) $(libdir)
 
 /tmp/%.o: src/%.c
 	@echo "\e[1mBUILD\e[0m $@"
